@@ -1,0 +1,14 @@
+<div class="tdlist">
+    <a href="#/new"><span class="glyphicon glyphicon-plus-sign"> Do you want to add task?</span></a>
+    <hr/>
+    <div ng-repeat="post in data">
+        <input type="checkbox">
+        <a id="ttl" href ="">{{ post.title }}  <span class="glyphicon glyphicon-pencil"></span></a>
+        <a id="rm" href=""><span class="glyphicon glyphicon-remove"></span></a>
+        <p class="dscrpt"> {{ data.description }}</p>
+        <div class="time">
+            <p>created at:12.12.12</p>
+            <p>done:13.12.12</p>
+        </div>
+    </div>
+</div>

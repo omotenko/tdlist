@@ -1,0 +1,13 @@
+<header class="-m-txt-none">
+      <%= link_to "TDlist", '#', id: "logo" %>
+      <nav>
+        <ul class="-m-nav ">
+			<% if signed_in? %>
+		      <li><%= link_to "Home", current_user %></li>
+		      <li><%= link_to "Sign out", signout_path, method: "delete" %></li>
+		    <% else %>
+		  	  <li><%= link_to "Sign in", signin_path %></li>
+		  	<% end %>
+        </ul>
+      </nav>
+</header>
