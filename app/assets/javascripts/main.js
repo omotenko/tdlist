@@ -12,4 +12,7 @@ tdlist
     			templateUrl: '../templates/new.html',
                 controller: 'CreateCtrl'
     		})
+            .otherwise({
+                redirectTo: '/'
+            })
     });
