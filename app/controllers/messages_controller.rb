@@ -3,11 +3,13 @@ class MessagesController < ApplicationController
 	include ActionController::Live
 
 	def index
-		@messages = Message.all
+		user = User.find(current_user.id)
+		messages = user.messages.to_a
+		send_message messages
 	end
 
 	def create
-		render json: {name: "oleg"}
+		render json: {name: "td"}
 	end
 
 	def update
@@ -18,20 +20,15 @@ class MessagesController < ApplicationController
 		render text: 'destroy'
 	end
 
-	def events
-    response.headers['Content-Type'] = 'text/event-stream'
-    sse = Streamer::SSE.new(response.stream)
-    redis = Redis.new
-    redis.subscribe('messages.create') do |on|
-      on.message do |event, data|
-        sse.write(data, event: 'messages.create')
-      end
-    end
-    render nothing: true
-    rescue IOError
-    # Client disconnected
-    ensure
-    redis.quit
-    sse.close
-    end
+	private
+		def send_message(messages)
+		    response.headers['Content-Type'] = 'text/event-stream'
+		    sse = ServerSide::SSE.new(response.stream)
+		    begin
+		        sse.write({message: "#{messages[0]}" })
+		    rescue IOError
+		    ensure
+		      sse.close
+		    end
+	    end
 end
