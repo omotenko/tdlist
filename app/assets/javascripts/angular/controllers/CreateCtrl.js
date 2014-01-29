@@ -1,15 +1,34 @@
 tdlist
-	.controller('CreateCtrl', function($scope, $http) {
+	.controller('CreateCtrl', function($scope, $rootScope, $http, $location) {
+	
 		$scope.save = function() {
+			var params = {title: $scope.todoTitle, description: $scope.todoDescr};
+
 			$http.
-				post('/messages', {name: "oleg"}).
+				post('/messages', params).
 				success(function(data, status) {
-					$scope.status = status;
-					$scope.data = data;
+					if (status == 200) {
+						$location.path('/');
+					}
 				}).
 				error(function(data, status) {
-					$scope.data = "Failed";
-					$scope.status = status;
+					$scope.errors = '<p><i>Failed.Try again!)</i></p>';
+				});
+		}
+
+		$scope.update = function() {
+			
+			var params = {id: $scope.id, title: $scope.todoTitle, description: $scope.todoDescr};
+
+			$http.
+				put('/messages/' + params.id, params).
+				success(function(data, status) {
+					if (status == 200) {
+						$location.path('/');
+					}
+				}).
+				error(function(data, status) {
+					$scope.errors = '<p><i>Failed.Try again!)</i></p>';
 				});
 		}
 

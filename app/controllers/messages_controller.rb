@@ -1,23 +1,41 @@
 require 'sse'
-class MessagesController < ApplicationController	
+class MessagesController < ApplicationController
+	before_action :get_user
+
 	include ActionController::Live
 
 	def index
-		user = User.find(current_user.id)
-		messages = user.messages.to_a
+		messages = @user.messages.to_json
 		send_message messages
 	end
 
 	def create
-		render json: {name: "td"}
+		begin
+			@user.messages.create!(title: params[:title], description: params[:description])
+			ok
+		rescue
+			bad_request
+		end
 	end
 
 	def update
-		render text: 'patch'
+		begin
+			@user.messages.find(params[:id]).update_attributes(title: params[:title], 
+															description: params[:description])
+			ok
+		rescue
+			bad_request
+		end
+		ok
 	end
 
 	def destroy
-		render text: 'destroy'
+		begin
+			@user.messages.find(params[:id]).destroy
+			ok
+		rescue
+			bad_request
+		end
 	end
 
 	private
@@ -25,10 +43,22 @@ class MessagesController < ApplicationController
 		    response.headers['Content-Type'] = 'text/event-stream'
 		    sse = ServerSide::SSE.new(response.stream)
 		    begin
-		        sse.write({message: "#{messages[0]}" })
+		        sse.write(messages)
 		    rescue IOError
 		    ensure
 		      sse.close
 		    end
+	    end
+
+	    def get_user
+	    	@user = User.find(current_user.id)
+	    end
+
+	    def ok
+	    	render nothing: true, status: 200
+	    end
+
+	    def bad_request
+	    	render nothing: true, status: 400
 	    end
 end

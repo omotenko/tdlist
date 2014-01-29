@@ -11,7 +11,7 @@ TDlist::Application.routes.draw do
 
   match '/messages',     to: 'messages#index',   via: 'get'
   match '/messages',     to: 'messages#create',  via: 'post'
-  match '/messages/:id', to: 'messages#update',  via: 'patch'
+  match '/messages/:id', to: 'messages#update',  via: 'put'
   match '/messages/:id', to: 'messages#destroy', via: 'destroy'
 
 

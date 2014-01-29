@@ -16,6 +16,7 @@
 // Add the following two lines
 //= require angular.min
 //= require angular-resource.min
+//= require angular-sanitize.min
 //= require main
 
 //= require_tree .

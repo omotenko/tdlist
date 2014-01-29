@@ -6,11 +6,8 @@ module ServerSide
       @io = io
     end
 
-    def write object, options = {}
-      options.each do |k,v|
-        @io.write "#{k}: #{v}\n"
-      end
-      @io.write "data: #{object}\n\n"
+    def write object
+      @io.write object
     end
 
     def close
