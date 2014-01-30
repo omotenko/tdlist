@@ -7,9 +7,7 @@ tdlist
 			$http.
 				post('/messages', params).
 				success(function(data, status) {
-					if (status == 200) {
-						$location.path('/');
-					}
+					successfully('/');
 				}).
 				error(function(data, status) {
 					$scope.errors = '<p><i>Failed.Try again!)</i></p>';
@@ -23,13 +21,13 @@ tdlist
 			$http.
 				put('/messages/' + params.id, params).
 				success(function(data, status) {
-					if (status == 200) {
-						$location.path('/');
-					}
+					successfully('/');
 				}).
 				error(function(data, status) {
 					$scope.errors = '<p><i>Failed.Try again!)</i></p>';
 				});
 		}
 
-	})
+	});
+
+function gerError

@@ -8,17 +8,16 @@
   <%= csrf_meta_tags %>
 </head>
 
-<body>
-	<%= render "layouts/partials/header" %>
-	<div class="content" ng-view> 
+<body">
+	<!--<%= render "layouts/partials/header" %>-->
+	<div class="content"> 
 		<% flash.each do |key,value| %>
 	      <div class="flash"><%= value %></div>
 	    <% end %>
 	    <%= yield %>
-	    <%= link_to image_tag("td.jpg", alt: "todo",  class: "img-tag"),  "http://www.google.com" %>
 	</div>
-	<%= render "layouts/partials/footer" %>
-	<%= debug(params) if Rails.env.development? %>
+	<!--<%= render "layouts/partials/footer" %>
+	<%= debug(params) if Rails.env.development? %>-->
 </body>
 
 </html>

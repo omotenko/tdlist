@@ -14,9 +14,7 @@ tdlist
 			$http.
 			delete('/messages/' + id).
 			success(function(data, status) {
-				if (status == 200) {
-					$location.path('/ok');
-				}
+				successfully('/ok');
 			}).
 			error(function(data, status) {
 				$scope.data = data || "Failed";
@@ -37,4 +35,10 @@ function toJSON(messages) {
 	var data = messages.substring(messages.indexOf('['), messages.indexOf(']')+1);
 
 	return JSON.parse(data);
+}
+
+function successfully(url) {
+	if (status == 200) {
+		$location.path(url);
+	}
 }

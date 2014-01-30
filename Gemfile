@@ -7,6 +7,7 @@ gem 'bootstrap-sass'
 
 gem 'bcrypt-ruby'
 
+gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 
 gem 'puma'

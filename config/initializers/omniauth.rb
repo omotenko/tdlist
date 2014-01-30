@@ -1,15 +1,6 @@
 OmniAuth.config.logger = Rails.logger
 
-if Rails.env.production?
-   # set the app parameter
-elsif Rails.env.development?
-	FACEBOOK_APP_ID = '741708409175344'
-	FACEBOOK_SECRET = 'c0ea709834ee9c0ebe08208e6d8ac180'
-else  
-   # test env
-end
-
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :facebook, '741708409175344', 'c0ea709834ee9c0ebe08208e6d8ac180'
+  provider :twitter, 'E0ZQHnd7V3M3E2MT8mBG4g', 'tSBtr9seB2FFqSbWoealxpBG2VBAFC1x8ltDiqvD1k'
 end
 

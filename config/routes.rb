@@ -5,14 +5,16 @@ TDlist::Application.routes.draw do
   
   root 'static_pages#home'
 
-  match '/signup',  to: 'users#new',        via: 'get'
-  match '/signin',  to: 'sessions#new',     via: 'get'
-  match '/signout', to: 'sessions#destroy', via: 'delete'
+  #match 'auth/twitter/callback', to: 'users#create', via: 'get'
 
-  match '/messages',     to: 'messages#index',   via: 'get'
-  match '/messages',     to: 'messages#create',  via: 'post'
-  match '/messages/:id', to: 'messages#update',  via: 'put'
-  match '/messages/:id', to: 'messages#destroy', via: 'destroy'
+  #match '/signup',  to: 'users#new',        via: 'get'
+  #match '/signin',  to: 'sessions#new',     via: 'get'
+  #match '/signout', to: 'sessions#destroy', via: 'delete'
+
+  #match '/messages',     to: 'messages#index',   via: 'get'
+  #match '/messages',     to: 'messages#create',  via: 'post'
+  #match '/messages/:id', to: 'messages#update',  via: 'put'
+  #match '/messages/:id', to: 'messages#destroy', via: 'destroy'
 
 
   
