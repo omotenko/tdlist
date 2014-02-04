@@ -4,9 +4,9 @@
         <ul class="-m-nav ">
 			<% if signed_in? %>
 		      <li><%= link_to "Home", current_user %></li>
-		      <li><%= link_to "Sign out", method: "delete" %></li>
+		      <li><%= link_to "Sign out", signout_path, method: "delete" %></li>
 		    <% else %>
-		  	  <li><%= link_to "Sign in" %></li>
+		  	  redirect_to '/'
 		  	<% end %>
         </ul>
       </nav>

@@ -17,6 +17,10 @@
 //= require angular.min
 //= require angular-resource.min
 //= require angular-sanitize.min
+//= require bootstrap.js
 //= require main
 
 //= require_tree .
+
+$('.dropdown-toggle').dropdown()
+

@@ -1,20 +1,22 @@
 <% provide(:title, " | #{ @user.name }") %>
-<div>
-	<aside class="ava-user">
-		<%= gravatar_for @user %>
-		<h4>
-			<%= @user.name %>:<%= @user.email %>
-		</h4>
-	</aside>
-</div>
+<%= render "layouts/partials/header" %>
+<div class="user-p">
+	<div>
+		<aside class="ava-user">
+			<%= gravatar_for @user %>
+			<h4>
+				<%= @user.name %>
+			</h4>
+		</aside>
+	</div>
 
-<div class="td" ng-app="tdlist">
-    <div class="txt">
-    	<h2>TODO list</h2>
-        <p>I do not want to forget the most important things!</p>
-    </div>
-	<div class="ang" ng-view></div>
-    <hr/>
-</div>   
-    </div>
+	<div class="td" ng-app="tdlist">
+	    <div class="txt">
+	    	<h2>TODO list</h2>
+	        <p>I do not want to forget the most important things!</p>
+	    </div>
+		<div class="ang" ng-view></div>
+	    <hr/>  
+	</div>
 </div>
+<%= render "layouts/partials/footer" %>

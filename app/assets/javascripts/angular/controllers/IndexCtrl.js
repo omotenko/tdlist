@@ -37,8 +37,5 @@ function toJSON(messages) {
 	return JSON.parse(data);
 }
 
-function successfully(url) {
-	if (status == 200) {
-		$location.path(url);
-	}
-}
+
+

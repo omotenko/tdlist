@@ -1,16 +1,20 @@
-<%= form_for(@user) do |f| %>
-    <%= render "layouts/partials/error_messages" %>
-	<%= f.label :name %>
-	<%= f.text_field :name , placeholder:"Enter your name"%>
-	
-	<%= f.label :email %>
-	<%= f.text_field :email, placeholder:"Enter your email" %>
+<div class="start-p">
+	<div class="sign-in" style="width: 350px">
+			<%= form_for(@user) do |f| %>
+			    <%= render "layouts/partials/error_messages" %>
+				<%= f.label :name %>
+				<%= f.text_field :name , placeholder:"Enter your name"%>
+				
+				<%= f.label :email %>
+				<%= f.text_field :email, placeholder:"Enter your email" %>
 
-	<%= f.label :password %>
-	<%= f.password_field :password, placeholder:"Enter your password" %>
+				<%= f.label :password %>
+				<%= f.password_field :password, placeholder:"Enter your password" %>
 
-	<%= f.label :password_confirmation, "Confirmation" %>
-	<%= f.password_field :password_confirmation, placeholder:"Confirm your password" %>
+				<%= f.label :password_confirmation, "Confirmation" %>
+				<%= f.password_field :password_confirmation, placeholder:"Confirm your password" %>
 
-	<%= f.submit yield(:button_name), class:"btn btn-large btn-primary" %>
-<% end %>
+				<%= f.submit yield(:button_name), class:"btn btn-large btn-primary" %>
+			<% end %>
+	</div>
+</div>

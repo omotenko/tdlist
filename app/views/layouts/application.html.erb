@@ -1,5 +1,5 @@
 <!DOCTYPE>
-<html>
+<html ng-app="tdlist">
 
 <head>
   <title>TDlist <%= yield(:title) %></title>
@@ -8,16 +8,13 @@
   <%= csrf_meta_tags %>
 </head>
 
-<body">
-	<!--<%= render "layouts/partials/header" %>-->
+<body>
 	<div class="content"> 
 		<% flash.each do |key,value| %>
 	      <div class="flash"><%= value %></div>
 	    <% end %>
 	    <%= yield %>
 	</div>
-	<!--<%= render "layouts/partials/footer" %>
-	<%= debug(params) if Rails.env.development? %>-->
 </body>
 
 </html>

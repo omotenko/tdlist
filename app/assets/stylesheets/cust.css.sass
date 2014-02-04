@@ -4,7 +4,6 @@ $whitegray: #c5d2e2
 $blue: #61809d
 
 body 
-	background-image: url('background.jpg')
 	margin: 0
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
 
@@ -17,8 +16,19 @@ header, footer
 	background: -moz-linear-gradient(top, #d0d1d2, #e4e7e8, #f4f7f9)
 	background: -webkit-linear-gradient(top, #d0d1d2, #e4e7e8, #f4f7f9)
 	background: -ms-linear-gradient(top, #d0d1d2, #e4e7e8, #f4f7f9)
-
+.full-screen
+	width:  100%
+	height: 100%
+.bg-img
+	background-image: url('background.jpg')
+.start-p
+	h2
+		margin: 0
+		padding-top: 25px
+.user-p
+	background-color: #fff
 #logo 
+	float: left
 	font-size: 34px
 	display:inline
 	letter-spacing: 2px
@@ -26,6 +36,8 @@ header, footer
 	color: #174773
 	text-shadow: 3px 2px #61809d
 
+nav
+	clear: both
 .-m-nav
 	float: right
 	margin: 0
@@ -48,7 +60,14 @@ header, footer
 	border-radius: 10px
 	box-shadow: inset 0 0 10px
 
-.content
+.left
+	float: left
+	opacity: 0.6
+
+.soc-img
+	img:hover
+		box-shadow: inset 0 0 5px #000
+
 
 .gravatar 
 	margin: 10px
@@ -77,13 +96,14 @@ header, footer
 .td
 	text-align: center
 .txt
+
 	color: #2f458b
 	h2
 		margin: 0
 		color: #5e78cc
 	p
 		position: relative
-		left: -80px
+		left: -85px
 	
 
 .ang
@@ -185,6 +205,7 @@ header, footer
 		text-shadow: 1px 3px 3px #fff
 	
 	h1
+		margin-top: 0
 		color: #724a0c
 		text-shadow: 1px 3px 3px #fff
 .name-field,.pass-field
@@ -212,7 +233,8 @@ header, footer
 	color: #fff
 	text-shadow: 0 0 15px #5d3e0d
 	text-decoration: underline
-
+.social
+	float: left
 /*---------------------------ERRORS--------------------------------*/
 .pluralize
 	border-radius: 2px
@@ -241,7 +263,7 @@ header, footer
 	width: 250px
 /*---------------------------FOOTER--------------------------------*/
 footer 
-
+	margin-top: 21%
 
 #rights
 	clear: both

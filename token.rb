@@ -1,23 +1,35 @@
-require 'openssl'
-require 'base64'
+require 'net/http'
+require 'uri'
 
-token1 = 'POST&https%3A%2F%2Fapi.twitter.com%2F1%2Fstatuses%'+
-'2Fupdate.json&include_entities%3Dtrue%26oauth_consumer_key%'+
-'3Dxvz1evFS4wEEPTGEFPHBog%26oauth_nonce%'+
-'3DkYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg%'+
-'26oauth_signature_method%3DHMAC-SHA1%'+
-'26oauth_timestamp%3D1318622958%26oauth_token%'+
-'3D370773112-'+
-'GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb%'+
-'26oauth_version%3D1.0%26status%3DHello%2520Ladies%2520%252B%'+
-'2520Gentlemen%252C%2520a%2520signed%2520OAuth'+
-'%2520request%2521'+
+uri = URI('http://api.twitter.com/oauth/request_token')
+    uri = Uri('https://api.twitter.com/oauth/request_token')
+    req = Net::Http::Post.new uri
+    oauth_consumer_key = 'E0ZQHnd7V3M3E2MT8mBG4g'
+    oauth_nonce = SecureRandom.base64(32)
+    oauth_callback = CGI::escape('http://localhost:3000/auth/twitter/callback')
+    oauth_signature_method = 'HMAC-SHA1'
+    oauth_timestamp = Time.now.to_i + ''
+    oauth_version='1.0'
+    parametr_string = "OAuth oauth_callback=#{oauth_callback}&
+    oauth_consumer_key=#{oauth_consumer_key}&
+    oauth_nonce=#{oauth_nonce}&
+    oauth_signature_method=#{oauth_signature_method}&
+    oauth_timestamp=#{oauth_timestamp}&
+    oauth_version=#{oauth_version}"
+    req['Authorization']
+Net::HTTP.start(uri.host, uri.port) do |http|
+  request = Net::HTTP::Get.new uri
 
-token2 = 'kAcSOqF21Fu85e7zjz7ZN2U4ZRhfV3WpwPAoE3Z7kBw&LswwdoU'+
-'aIvS8ltyTt5jkRh4J50vUPVVHtR2YPi5kE'
+  request.add_field 'authorization', 'OAuth 
+  oauth_nonce="K7ny27JTpKVsTgdyLdDfmQQWVLERj2zAK5BslRsqyw", 
+  oauth_callback="http%3A%2F%2Fmyapp.com%3A3005%2Ftwitter%2Fprocess_callback", 
+  oauth_signature_method="HMAC-SHA1", 
+  oauth_timestamp="1300228849", 
+  oauth_consumer_key="OqEqJeafRSF11jBMStrZz", 
+  oauth_signature="Pc%2BMLdv028fxCErFyi8KXFM%2BddU%3D", 
+  oauth_version="1.0"'
 
-sha1 = OpenSSL::Digest.new('sha1')
+  response = http.request request # Net::HTTPResponse object
 
-res = OpenSSL::HMAC.hexdigest(sha1,token1,token2)
-
-puts Base64.encode64(res)
+  puts response
+end
