@@ -1,5 +1,6 @@
 tdlist
 	.controller('IndexCtrl', function($scope,$rootScope, $http, $location) {
+
 		$http.
 		get('/messages').
 		success(function(data, status) {

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140205063333) do
+ActiveRecord::Schema.define(version: 20140204154545) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,13 +19,10 @@ ActiveRecord::Schema.define(version: 20140205063333) do
   create_table "authentications", force: true do |t|
     t.string   "uid"
     t.string   "provider"
-    t.string   "name"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "email"
   end
-
-  add_index "authentications", ["uid"], name: "index_authentications_on_uid", using: :btree
 
   create_table "messages", force: true do |t|
     t.string   "title"

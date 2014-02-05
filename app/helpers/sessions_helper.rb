@@ -23,6 +23,9 @@ module SessionsHelper
     end
 
     def sign_out
+        if !current_user.authentications.empty?
+            User.find_by(id: current_user.id).destroy()
+        end 
 	    self.current_user = session[:current_user_id] = nil
     end
 end

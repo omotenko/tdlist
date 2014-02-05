@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
 		if signed_in?
 	      redirect_to current_user
 	    else
-	    	redirect_to '/'
+	    	redirect_to root_path
 		end
 	end
 
@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
 			redirect_to user
 		else
 			flash[:error] = "Invalid email/password"
-		    redirect_to '/'
+		    redirect_to root_path
 		end
     end
 

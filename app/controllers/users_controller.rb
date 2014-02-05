@@ -8,25 +8,15 @@ class UsersController < ApplicationController
   end
 
   def create
-    auth = request.env["omniauth.auth"]
-    if auth
-      @user = Authentication.find_by(uid: auth['uid']) || Authentication.new(
-          uid: auth['uid'], provider: auth['provider'], name: auth['info']['name'],
-          email: auth['info']['email'])
-    else
-      @user = User.new(user_params)
-    end
-   
+    @user = User.new(user_params)  
+
     if @user.save
-      if auth
-        render text: "Hello! #{auth['info']['name']}: #{auth['info']['email']}"
-      else
-        sign_in @user
-        redirect_to @user
-      end
+      sign_in @user
+      redirect_to @user
     else
       render 'new'
     end
+    
   end
 
   def show
