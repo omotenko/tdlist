@@ -14,7 +14,7 @@ tdlist
 			$http.
 			delete('/messages/' + id).
 			success(function(data, status) {
-				successfully('/ok');
+				$location.path('/ok');
 			}).
 			error(function(data, status) {
 				$scope.data = data || "Failed";
