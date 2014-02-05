@@ -2,11 +2,10 @@ TDlist::Application.routes.draw do
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
   resources :messages
-  resources :authentications, only: [:create, :destroy]
   
   root 'static_pages#home'
 
-  match '/auth/:provider/callback', to: 'authentications#create', via: 'get'
+  match '/auth/:provider/callback', to: 'users#create', via: 'get'
 
   match '/signup',  to: 'users#new',        via: 'get'
   match '/signin',  to: 'sessions#new',     via: 'get'
