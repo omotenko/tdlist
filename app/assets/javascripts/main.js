@@ -6,7 +6,7 @@ tdlist
     	$routeProvider
     		.when('/', {
     			templateUrl: '../templates/list.html',
-                controller:  'ctrl'
+                controller:  'IndexCtrl'
     		})
     		.when('/new', {
     			templateUrl: '../templates/new.html',
