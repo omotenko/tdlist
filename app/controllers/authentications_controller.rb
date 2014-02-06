@@ -12,7 +12,7 @@ class AuthenticationsController < ApplicationController
 
   				if user.save!     	
   					sign_in user	
-					redirect_to user
+					  redirect_to user
   				else
   					flash[:notice] = 'Internal Server Error'
   					redirect_to root_path
