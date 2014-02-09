@@ -6,17 +6,17 @@
         $routeProvider
 
             .when '/',
-                templateUrl: '../templates/list.html'
+                templateUrl: '/templates/list.html'
                 controller:  'IndexCtrl'
             
             .when '/new',
 
-                templateUrl: '../templates/new.html'
+                templateUrl: '/templates/new.html'
                 controller:  'CreateCtrl'
             
             .when '/edit',
 
-                templateUrl: '../templates/edit.html'
+                templateUrl: '/templates/edit.html'
                 controller:  'CreateCtrl'
                 
             .otherwise
