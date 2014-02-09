@@ -1,13 +1,18 @@
+
 <header class="-m-txt-none">
-      <%= link_to "TDlist", '#', id: "logo" %>
-      <nav>
-        <ul class="-m-nav ">
-			<% if signed_in? %>
-		      <li><%= link_to "Home", current_user %></li>
-		      <li><%= link_to "Sign out", signout_path, method: "delete" %></li>
-		    <% else %>
-		  	  redirect_to '/'
-		  	<% end %>
-        </ul>
-      </nav>
+
+<nav class="navbar navbar-default" role="navigation">
+  	<%= link_to "TDlist", '#', id: "logo"%><!--class="navbar-brand"-->
+
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+      	<% if signed_in? %>
+	      <li class="active"><%= link_to "Home", current_user %></li>
+	      <li><%= link_to "Sign out", signout_path, method: "delete" %></li>
+		<% end %>
+      </ul>
+    </div>
+  
+</nav>
+
 </header>

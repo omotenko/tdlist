@@ -5,6 +5,9 @@ gem 'rails', '4.0.2'
 
 gem 'bootstrap-sass'
 
+gem 'angularjs-rails'
+gem 'angularjs-rails-resource'
+
 gem 'bcrypt-ruby'
 
 gem 'omniauth-twitter'

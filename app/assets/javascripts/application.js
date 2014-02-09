@@ -14,9 +14,9 @@
 //= require jquery_ujs
 
 // Add the following two lines
-//= require angular.min
-//= require angular-resource.min
-//= require angular-sanitize.min
+//= require angular/angular.min.js
+//= require angular/angular-resource.min.js
+//= require angular/angular-sanitize.min.js
 //= require bootstrap.js
 //= require main
 

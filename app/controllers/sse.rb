@@ -2,12 +2,15 @@ require 'json'
 
 module ServerSide
   class SSE
-    def initialize io
+
+    def initialize io, req
       @io = io
     end
-
-    def write object
-      @io.write object
+    def write object, options={}
+      options.each do |k,v|
+        @io.write "#{k}: #{v}\n"
+      end
+        @io.write "data: #{object}\n\n"
     end
 
     def close

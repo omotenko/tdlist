@@ -41,12 +41,15 @@ class MessagesController < ApplicationController
 	private
 		def send_message(messages)
 		    response.headers['Content-Type'] = 'text/event-stream'
-		    sse = ServerSide::SSE.new(response.stream)
+		    sse = ServerSide::SSE.new(response.stream, request)
 		    begin
-		        sse.write(messages)
+		    	sse.write(messages, retry: 600)
+		    	logger.info "start stream"
 		    rescue IOError
+		    	logger.info "closed stream with ioerror"
 		    ensure
-		      sse.close
+		    	logger.info "closed stream ensure"
+		    	sse.close
 		    end
 	    end
 
