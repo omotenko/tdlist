@@ -1,0 +1,45 @@
+<div name="message" class="tdlist edt">
+	<p ng-bind-html="errors" class="err"></p>
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+		<div class="col-md-2">
+			<label class="lbl">Title</label>
+		</div>
+		<div class="col-md-8">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+		<div class="col-md-10">
+			<input class="txt-field" type="text" name="name" ng-model="todoTitle" value="{{todoTitle}}" required>
+		</div>
+		<div class="col-md-1">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+		<div class="col-md-2">
+			<label class="lbl">Description</label>
+		</div>
+		<div class="col-md-8">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-1">
+		</div>
+		<div class="col-md-5">
+			<textarea class="txt-field" name="description" ng-model="todoDescr">{{todoDescr}}</textarea>
+		</div>
+		<div class="col-md-2">
+			<a id="cancel" href="#/" class="btn">Cancel</a>
+		</div>
+		<div class="col-md-3">
+			<button id="ok-u" ng-click="update()" ng-disabled="message.$invalid" class="btn btn-primary">Update</button>
+		</div>
+		<div class="col-md-1">
+		</div>
+	</div>
+</div>
