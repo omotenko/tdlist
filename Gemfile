@@ -17,6 +17,8 @@ gem 'omniauth-linkedin-oauth2'
 
 gem 'puma'
 
+gem 'rack-offline'
+
 # Use postgresql as the database for Active Record
 gem 'pg', '0.17.1'
 

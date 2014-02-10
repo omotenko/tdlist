@@ -5,6 +5,20 @@ TDlist::Application.routes.draw do
   resources :authentications, only: [:create]
   
   root 'static_pages#home'
+  
+  offline = Rails::Offline.configure do
+    public_path = Pathname.new(Rails.public_path)
+    Dir[
+        "javascripts/*.js",
+        "stylesheets/*.css"
+      ].each do |file|
+      file = Pathname.new(file)
+      cache file.relative_path_from(public_path)
+    end
+
+    network "/"
+  end
+  match '/application.manifest', to: Rails::Offline, via: 'get'
 
   match '/auth/:provider/callback', to: 'authentications#create', via: 'get'
 
