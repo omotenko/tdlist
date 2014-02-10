@@ -19,6 +19,7 @@
 //= require angular/angular-sanitize.min
 //= require bootstrap.js
 //= require main
+//= require angular/controllers/middleware
 
 //= require_tree .
 

@@ -1,5 +1,5 @@
 @tdlist
-	.controller 'IndexCtrl', ($scope, $rootScope, $http, $location) ->
+	.controller 'IndexCtrl', ($scope, $rootScope, $http, $location, middleware) ->
 
 		source = new EventSource '/messages'
 		source.onmessage = ->
@@ -10,8 +10,8 @@
 			redirect = '/ok'
 			$http.
 				delete('/messages/' + id).
-				success(success($location, redirect)).
-				error(error)
+				success(middleware.success($location, redirect)).
+				error(middleware.error)
 
 		$scope.update = (message)->
 			$rootScope.id        = message.id

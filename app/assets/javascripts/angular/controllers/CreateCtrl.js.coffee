@@ -1,5 +1,5 @@
 @tdlist
-	.controller 'CreateCtrl', ($scope, $rootScope, $http, $location) ->
+	.controller 'CreateCtrl', ($scope, $rootScope, $http, $location, middleware) ->
 		HOME_PATH = '/'
 
 		$scope.save = ->
@@ -8,8 +8,8 @@
 				description: $scope.todoDescr
 			$http.
 				post('/messages', params).
-				success(success($location, HOME_PATH)).
-				error(error)
+				success(middleware.success($location, HOME_PATH)).
+				error(middleware.error)
 				
 		$scope.update = ->
 			params = 
@@ -19,14 +19,8 @@
 
 			$http.
 				put('/messages/' + params.id, params).
-				success(success($location, HOME_PATH)).
-				error(error)
+				success(middleware.success($location, HOME_PATH)).
+				error(middleware.error)
 
 			$rootScope.todoTitle = $rootScope.todoDescr = null
 
-success = ($location, path) ->
-	(data, status) ->
-		$location.path(path)
-
-error = (data, status) ->
-	$scope.errors = '<p><i>' + status + ':' + data + '</i></p>'
