@@ -9,7 +9,7 @@
     <div ng-repeat="message in data">
         <div class="row">     
             <div class="col-md-1">
-                <a href="" id="done"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+                <a href="" id="done" ><span class="glyphicon glyphicon-thumbs-up"></span></a>
             </div>
             <div class="col-md-2"> 
             </div>
@@ -39,7 +39,10 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <p>done at:<span class="date done">{{ message.updated_at | date:'medium' }}</span> &nbsp</p>
+                <a href="" ng-click="done({{ message }})">done:
+                    <progress id="done" value="{{ message.done }}" max="100"></progress>  
+                    <span>{{ message.done }}</span>%
+                </a>        
             </div>
         </div>
         <hr/>

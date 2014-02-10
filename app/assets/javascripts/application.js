@@ -18,7 +18,8 @@
 //= require angular/angular-resource.min
 //= require angular/angular-sanitize.min
 //= require bootstrap.js
-//= require main
+//= require bootbox
+//= require angular/main
 //= require angular/controllers/middleware
 
 //= require_tree .

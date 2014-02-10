@@ -20,6 +20,18 @@
 
 			$location.path('/edit');
 
+		$scope.done = (message) ->
+ 			 bootbox.prompt "How much did you (0..100%) ?", (res) ->
+ 			 	if parseInt(res) and res <= 100 and res >=0
+ 			 		params = 
+ 			 			id: message.id, 
+ 			 			done: res
+	 				$http.
+						put('/messages/' + message.id, params).
+						success(middleware.success($location, '/')).
+						error(middleware.error)
+			
+
 toJSON = (messages) ->
 	data = messages.substring(messages.indexOf('['), messages.indexOf(']')+1)
 	JSON.parse(data)

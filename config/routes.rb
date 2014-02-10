@@ -6,10 +6,38 @@ TDlist::Application.routes.draw do
   
   root 'static_pages#home'
 
-  offline = Rails::Offline.configure do
-      cache '/assets/*.css'
+  offline = Rack::Offline.configure do
+    #cache "assets/application.css?body=1"
+    #cache "assets/cust.css?body=1"
+
+    #cache "assets/application.js?body=1"
+
+    #cache "assets/jquery.js?body=1"
+    #cache "assets/jquery_ujs.js?body=1"  
+
+    #cache "assets/application.js?body=1"
+
+    #root_path = Pathname.new(Rails.root + "app/assets/javascripts")
+
+    #Dir[
+     # "#{Rails.root}/app/assets/bootstrap/*.{js}",
+     # "#{Rails.root}/app/assets/javascripts/angular/*.{js,coffee}",
+     # "#{Rails.root}/app/assets/javascripts/angular/controllers/*.{js,coffee}",
+     # ].each do |file|
+     # cache Pathname.new("assets/" + Pathname.new(file + "?body=1").relative_path_from(root_path).to_s)
+    #end
+
+    public_path = Pathname.new(Rails.public_path)
+    Dir[
+      public_path.join("templates/*.html")
+      ].each do |file|
+      cache Pathname.new(file).relative_path_from(public_path)
+    end
+
+    network "*"
   end
-  match '/application.manifest', to: Rails::Offline, via: 'get'
+
+  match '/application.manifest', to: offline, via: 'get'
 
   match '/auth/:provider/callback', to: 'authentications#create', via: 'get'
 

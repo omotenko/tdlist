@@ -20,18 +20,24 @@ class MessagesController < ApplicationController
 
 	def update
 		begin
-			@user.messages.find(params[:id]).update_attributes(title: params[:title], 
-															description: params[:description])
-			ok
+			user_message = @user.messages.find(params[:id])
+			if params[:done]
+				user_message.update_attribute(:done, params[:done])
+				ok
+			else
+				done = user_message.done
+				user_message.update_attributes!(title: params[:title],
+				 description: params[:description], done: done)
+				ok
+			end
 		rescue
 			bad_request
 		end
-		ok
 	end
 
 	def destroy
 		begin
-			@user.messages.find(params[:id]).destroy
+			@user.messages.find(params[:id]).destroy!
 			ok
 		rescue
 			bad_request
