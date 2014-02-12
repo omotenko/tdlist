@@ -1,18 +1,32 @@
 @tdlist
-	.controller 'IndexCtrl', ($scope, $rootScope, $http, $location, middleware) ->
-
+	.controller 'IndexCtrl', ($scope, $rootScope, $http, $location, middleware, storage) ->
+		
 		source = new EventSource '/messages'
-		source.onmessage = ->
-			$scope.$apply ->
-				$scope.data = JSON.parse event.data
 
-		$scope.destroy = (id)->
+		source.onmessage = (event) ->
+
+			$scope.$apply ->
+				storage.set('pendingItems',JSON.parse event.data)
+				$scope.data = storage.get('pendingItems')
+		
+		$scope.data = storage.get('pendingItems')
+
+		$scope.destroy = (id) ->
 			redirect = '/ok'
 			$http.
 				delete('/messages/' + id).
 				success(middleware.success($location, redirect)).
-				error(middleware.error)
-
+				error (data, status) ->
+					if status is 0
+						pendingItems = storage.get('pendingItems')
+						find = false
+						angular.forEach pendingItems, (key, value) ->
+							if !find
+								if key.id is id
+									$scope.data.splice value,1
+									storage.set('pendingItems', $scope.data)
+									find = true
+		
 		$scope.update = (message)->
 			$rootScope.id        = message.id
 			$rootScope.todoTitle = message.title;
@@ -29,8 +43,18 @@
 	 				$http.
 						put('/messages/' + message.id, params).
 						success(middleware.success($location, '/')).
-						error(middleware.error)
-			
+						error (data, status) ->
+							if status is 0
+								pendingItems = storage.get('pendingItems')
+								find = false
+								angular.forEach pendingItems, (key, value) ->
+									if !find
+									if key.id is params.id
+										pendingItems[value].done = params.done
+										$scope.data = pendingItems
+										storage.set('pendingItems', $scope.data)
+										find = true
+										middleware.success($location, '/ok')
 
 toJSON = (messages) ->
 	data = messages.substring(messages.indexOf('['), messages.indexOf(']')+1)

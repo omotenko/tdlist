@@ -1,4 +1,6 @@
-@tdlist = angular.module "tdlist", ["ngSanitize"]
+@online = true
+
+@tdlist = angular.module "tdlist", ["ngSanitize",'angularLocalStorage']
 
 @tdlist
     .config ($routeProvider, $httpProvider) ->

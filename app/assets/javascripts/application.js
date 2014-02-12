@@ -17,6 +17,8 @@
 //= require angular/angular.min
 //= require angular/angular-resource.min
 //= require angular/angular-sanitize.min
+//= require angular/angular-cookies.min
+//= require angular/angularLocalStorage
 //= require bootstrap.js
 //= require bootbox
 //= require angular/main
