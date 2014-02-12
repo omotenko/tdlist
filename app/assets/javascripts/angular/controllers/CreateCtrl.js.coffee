@@ -20,7 +20,7 @@
 						pendingItems.unshift params
 						$scope.data = pendingItems
 						storage.set('pendingItems', $scope.data)
-						middleware.success($location, HOME_PATH)
+						$location.path '/'
 				
 		$scope.update = ->
 			params = 
@@ -45,7 +45,7 @@
 									storage.set('pendingItems', $scope.data)
 
 									find = true
-									middleware.success($location, HOME_PATH)
+									$location.path '/'
 
 			$rootScope.todoTitle = $rootScope.todoDescr = null
 

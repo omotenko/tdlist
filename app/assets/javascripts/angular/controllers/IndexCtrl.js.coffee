@@ -54,7 +54,7 @@
 											$scope.data = pendingItems
 											storage.set('pendingItems', $scope.data)
 											find = true
-											middleware.success($location, '/ok')
+											$location.path '/ok'
 
 toJSON = (messages) ->
 	data = messages.substring(messages.indexOf('['), messages.indexOf(']')+1)
