@@ -49,12 +49,12 @@
 								find = false
 								angular.forEach pendingItems, (key, value) ->
 									if !find
-									if key.id is params.id
-										pendingItems[value].done = params.done
-										$scope.data = pendingItems
-										storage.set('pendingItems', $scope.data)
-										find = true
-										middleware.success($location, '/ok')
+										if key.id is params.id
+											pendingItems[value].done = params.done
+											$scope.data = pendingItems
+											storage.set('pendingItems', $scope.data)
+											find = true
+											middleware.success($location, '/ok')
 
 toJSON = (messages) ->
 	data = messages.substring(messages.indexOf('['), messages.indexOf(']')+1)
