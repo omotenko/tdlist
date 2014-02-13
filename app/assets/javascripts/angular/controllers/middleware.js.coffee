@@ -1,7 +1,8 @@
 @tdlist
 	.factory "middleware", () ->
-		success: ($location, path) ->
+		success: ($location, path, storage) ->
             (data, status) ->
+            	storage.set 'pendingItems', []
             	$location.path(path)
 
         error: (data, status) ->

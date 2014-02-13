@@ -1,24 +1,51 @@
 @tdlist
 	.controller 'IndexCtrl', ($scope, $rootScope, $http, $location, middleware, storage) ->
-		
-		source = new EventSource '/messages'
 
-		source.onmessage = (event) ->
+		pendingItems = angular.toJson storage.get 'pendingItems'
 
-			$scope.$apply ->
-				storage.set('pendingItems',JSON.parse event.data)
-				$scope.data = storage.get('pendingItems')
+		if pendingItems is angular.toJson []
+			source = new EventSource '/messages'
+			source.onmessage = (event) ->
+				$scope.$apply ->
+					storage.set('pendingItems',JSON.parse event.data)
+					$scope.data = storage.get('pendingItems')
 		
 		$scope.data = storage.get('pendingItems')
 
+		sendPending = () ->
+			if navigator.onLine and ((source is undefined) or (source.readyState is 2)) 
+					pendingItems = angular.toJson storage.get('pendingItems')
+					$.ajax 
+						url: '/messages/:cache', 
+						method: 'PUT',
+						data: 
+							items: pendingItems, 
+						success: () ->
+							storage.set 'pendingItems', []
+							source = new EventSource '/messages'
+							source.onmessage = (event) ->
+								$scope.$apply ->
+									storage.set('pendingItems',JSON.parse event.data)
+									$scope.data = storage.get('pendingItems')
+
+							$scope.data = storage.get('pendingItems')
+			setTimeout sendPending, 500
+
+		sendPending()
+
+		$scope.new = () ->
+			if source isnt undefined
+				source.close()
 		$scope.destroy = (id) ->
 			redirect = '/ok'
 			$http.
 				delete('/messages/' + id).
-				success(middleware.success($location, redirect)).
+				success(middleware.success($location, redirect, storage)).
 				error (data, status) ->
 					if status is 0
 						pendingItems = storage.get('pendingItems')
+						if source isnt undefined
+							source.close() 
 						find = false
 						angular.forEach pendingItems, (key, value) ->
 							if !find
@@ -32,6 +59,8 @@
 			$rootScope.todoTitle = message.title;
 			$rootScope.todoDescr = message.description;
 
+			if source isnt undefined
+				source.close()
 			$location.path('/edit');
 
 		$scope.done = (message) ->
@@ -42,10 +71,12 @@
  			 			done: res
 	 				$http.
 						put('/messages/' + message.id, params).
-						success(middleware.success($location, '/')).
+						success(middleware.success($location, '/', storage)).
 						error (data, status) ->
 							if status is 0
 								pendingItems = storage.get('pendingItems')
+								if source isnt undefined
+									source.close() 
 								find = false
 								angular.forEach pendingItems, (key, value) ->
 									if !find
@@ -54,7 +85,6 @@
 											$scope.data = pendingItems
 											storage.set('pendingItems', $scope.data)
 											find = true
-											$location.path '/ok'
 
 toJSON = (messages) ->
 	data = messages.substring(messages.indexOf('['), messages.indexOf(']')+1)

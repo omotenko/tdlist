@@ -8,15 +8,18 @@
 				description: $scope.todoDescr
 			$http.
 				post('/messages', params).
-				success(middleware.success($location, HOME_PATH)).
+				success(middleware.success($location, HOME_PATH, storage)).
 				error (data, status) ->
 					if status is 0
 						pendingItems = storage.get('pendingItems')
 
-						params.id = pendingItems[0].id + 1
+						if pendingItems.length is 0
+							params.id = 1
+						else
+							params.id = pendingItems[0].id + 1
+							
 						params.done = '0'
 						params.updated_at = new Date 
-
 						pendingItems.unshift params
 						$scope.data = pendingItems
 						storage.set('pendingItems', $scope.data)
@@ -30,7 +33,7 @@
 
 			$http.
 				put('/messages/' + params.id, params).
-				success(middleware.success($location, HOME_PATH)).
+				success(middleware.success($location, HOME_PATH, storage)).
 				error (data, status) ->
 					if status is 0
 						pendingItems = storage.get('pendingItems')

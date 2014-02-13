@@ -1,4 +1,6 @@
 require 'sse'
+require 'json'
+
 class MessagesController < ApplicationController
 	before_action :get_user
 
@@ -20,15 +22,31 @@ class MessagesController < ApplicationController
 
 	def update
 		begin
-			user_message = @user.messages.find(params[:id])
-			if params[:done]
-				user_message.update_attribute(:done, params[:done])
-				ok
+			if  params[:id] == ':cache'
+				begin
+					messages = JSON.parse(params[:items].gsub('\"', '"'))
+					@user.messages = []
+					if messages.length
+						messages.each do |item|
+							@user.messages.create!(title: item["title"], description: item["description"],
+								done: item["done"])
+						end
+					end
+					ok
+				rescue
+					bad_request
+				end
 			else
-				done = user_message.done
-				user_message.update_attributes!(title: params[:title],
-				 description: params[:description], done: done)
-				ok
+				user_message = @user.messages.find(params[:id])
+				if params[:done]
+					user_message.update_attribute(:done, params[:done])
+					ok
+				else
+					done = user_message.done
+					user_message.update_attributes!(title: params[:title],
+					 description: params[:description], done: done)
+					ok
+				end
 			end
 		rescue
 			bad_request
