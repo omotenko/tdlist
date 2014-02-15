@@ -1,41 +1,42 @@
 @tdlist
 	.controller 'IndexCtrl', ($scope, $rootScope, $http, $location, middleware, storage) ->
 
-		pendingItems = angular.toJson storage.get 'pendingItems'
+		pendingItems = storage.get 'pendingItems'
 
-		if pendingItems is angular.toJson []
-			source = new EventSource '/messages'
-			source.onmessage = (event) ->
-				$scope.$apply ->
-					storage.set('pendingItems',JSON.parse event.data)
-					$scope.data = storage.get('pendingItems')
-		
-		$scope.data = storage.get('pendingItems')
+		if (pendingItems is undefined) or (pendingItems.length is 0)
+			source = startEventSource $scope, storage
 
+		$scope.data = storage.get 'allItems'
+		send = null
 		sendPending = () ->
 			if navigator.onLine and ((source is undefined) or (source.readyState is 2)) 
-					pendingItems = angular.toJson storage.get('pendingItems')
-					$.ajax 
-						url: '/messages/:cache', 
-						method: 'PUT',
-						data: 
-							items: pendingItems, 
-						success: () ->
-							storage.set 'pendingItems', []
-							source = new EventSource '/messages'
-							source.onmessage = (event) ->
-								$scope.$apply ->
-									storage.set('pendingItems',JSON.parse event.data)
-									$scope.data = storage.get('pendingItems')
+					pendingItems = storage.get('pendingItems')
+					if (pendingItems isnt undefined) and (pendingItems.length isnt 0)
+						$.ajax 
+							url: '/messages/:cache', 
+							method: 'PUT',
+							data: 
+								items: angular.toJson pendingItems, 
+							success: () ->
+								storage.set 'pendingItems', []
+								source = startEventSource $scope, storage
+								middleware.online()
+							error: () ->
+								middleware.offline()
+			else
+				if !navigator.onLine
+					middleware.offline()
+				else
+					middleware.online()
 
-							$scope.data = storage.get('pendingItems')
-			setTimeout sendPending, 500
+			send = setTimeout sendPending, 500
 
 		sendPending()
 
 		$scope.new = () ->
-			if source isnt undefined
-				source.close()
+			closeEventSource source
+			clearTimeout(send)
+
 		$scope.destroy = (id) ->
 			redirect = '/ok'
 			$http.
@@ -43,24 +44,33 @@
 				success(middleware.success($location, redirect, storage)).
 				error (data, status) ->
 					if status is 0
-						pendingItems = storage.get('pendingItems')
-						if source isnt undefined
-							source.close() 
+						middleware.offline()
 						find = false
-						angular.forEach pendingItems, (key, value) ->
+						angular.forEach $scope.data, (key, value) ->
 							if !find
 								if key.id is id
+									item = 
+										data: $scope.data[value]
+										method: 'destroy'
 									$scope.data.splice value,1
-									storage.set('pendingItems', $scope.data)
+									pendingItems = storage.get 'pendingItems'
+									angular.forEach pendingItems, (key, value) ->
+										if key["data"].id is id
+											pendingItems.splice value,1
+											find = true
+									if !find
+										pendingItems.push item
+									storage.set 'pendingItems', pendingItems
+									closeEventSource source
+									storage.set('allItems', $scope.data)
 									find = true
 		
 		$scope.update = (message)->
 			$rootScope.id        = message.id
 			$rootScope.todoTitle = message.title;
 			$rootScope.todoDescr = message.description;
-
-			if source isnt undefined
-				source.close()
+			closeEventSource source
+			clearTimeout(send)
 			$location.path('/edit');
 
 		$scope.done = (message) ->
@@ -75,8 +85,7 @@
 						error (data, status) ->
 							if status is 0
 								pendingItems = storage.get('pendingItems')
-								if source isnt undefined
-									source.close() 
+								closeEventSource source
 								find = false
 								angular.forEach pendingItems, (key, value) ->
 									if !find
@@ -85,7 +94,14 @@
 											$scope.data = pendingItems
 											storage.set('pendingItems', $scope.data)
 											find = true
+startEventSource = ($scope, storage) ->
+	source = new EventSource '/messages'
+	source.onmessage = (event) ->
+		$scope.$apply ->
+			storage.set('allItems',JSON.parse event.data)
+			$scope.data = JSON.parse event.data 
+	return source 
 
-toJSON = (messages) ->
-	data = messages.substring(messages.indexOf('['), messages.indexOf(']')+1)
-	JSON.parse(data)
+closeEventSource = (source) ->
+	if source isnt undefined
+		source.close()

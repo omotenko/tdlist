@@ -2,8 +2,12 @@
 	.factory "middleware", () ->
 		success: ($location, path, storage) ->
             (data, status) ->
+            	online()
             	storage.set 'pendingItems', []
             	$location.path(path)
 
-        error: (data, status) ->
-			#$scope.errors = '<p><i>' + status + ':' + data + '</i></p>'
+        online : () ->
+        	document.getElementById("network").innerHTML = "online"
+
+        offline: () ->
+        	document.getElementById("network").innerHTML = "offline"

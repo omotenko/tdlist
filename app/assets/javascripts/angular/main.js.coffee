@@ -1,5 +1,3 @@
-@online = true
-
 @tdlist = angular.module "tdlist", ["ngSanitize",'angularLocalStorage']
 
 @tdlist

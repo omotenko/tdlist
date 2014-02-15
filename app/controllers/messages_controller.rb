@@ -14,38 +14,54 @@ class MessagesController < ApplicationController
 	def create
 		begin
 			@user.messages.create!(title: params[:title], description: params[:description])
-			ok
+			_response 200
 		rescue
-			bad_request
+			_response 400
 		end
 	end
 
 	def update
 		begin
 			if  params[:id] == ':cache'
-				begin
-					messages = JSON.parse(params[:items].gsub('\"', '"'))
-					@user.messages = []
-					if messages.length
-						messages.each do |item|
-							@user.messages.create!(title: item["title"], description: item["description"],
-								done: item["done"])
+				messages = JSON.parse(params[:items].gsub('\"', '"'))
+				if messages.length
+					messages.each do |item|
+						case item["method"]
+						when "destroy"
+							data = item["data"]
+							message = @user.messages.find_by(id: data["id"])
+							if message
+								message.destroy
+							end
+						when "save"
+							data = item["data"]
+							@user.messages.create!(title: data["title"], 
+								description: data["description"], done: data["done"])
+						when "update"
+							data = item["data"]
+							message = @user.messages.find_by(id: data["id"])
+							if message
+								message.update_attributes(title: data["title"], 
+									description: data["description"], done: data["done"])
+							end
 						end
 					end
-					ok
-				rescue
-					bad_request
 				end
+				_response 200
 			else
-				user_message = @user.messages.find(params[:id])
+				begin
+					user_message = @user.messages.find(params[:id])
+				rescue 
+					_response 404 
+				end
 				if params[:done]
 					user_message.update_attribute(:done, params[:done])
-					ok
+					_response 200
 				else
 					done = user_message.done
 					user_message.update_attributes!(title: params[:title],
 					 description: params[:description], done: done)
-					ok
+					_response 200
 				end
 			end
 		rescue
@@ -56,9 +72,9 @@ class MessagesController < ApplicationController
 	def destroy
 		begin
 			@user.messages.find(params[:id]).destroy!
-			ok
+			_response(200)
 		rescue
-			bad_request
+			_response(400)
 		end
 	end
 
@@ -81,11 +97,7 @@ class MessagesController < ApplicationController
 	    	@user = User.find(current_user.id)
 	    end
 
-	    def ok
-	    	render nothing: true, status: 200
-	    end
-
-	    def bad_request
-	    	render nothing: true, status: 400
+	    def _response(status)
+	    	render nothing: true, status: status
 	    end
 end
