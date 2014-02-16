@@ -75,7 +75,7 @@
 
 		$scope.done = (message) ->
  			 bootbox.prompt "How much did you (0..100%) ?", (res) ->
- 			 	if parseInt(res) and res <= 100 and res >=0
+ 			 	if parseInt(res) and (res <= 100 and res >=0)
  			 		params = 
  			 			id: message.id, 
  			 			done: res
@@ -83,17 +83,7 @@
 						put('/messages/' + message.id, params).
 						success(middleware.success($location, '/', storage)).
 						error (data, status) ->
-							if status is 0
-								pendingItems = storage.get('pendingItems')
-								closeEventSource source
-								find = false
-								angular.forEach pendingItems, (key, value) ->
-									if !find
-										if key.id is params.id
-											pendingItems[value].done = params.done
-											$scope.data = pendingItems
-											storage.set('pendingItems', $scope.data)
-											find = true
+							#do nothing
 startEventSource = ($scope, storage) ->
 	source = new EventSource '/messages'
 	source.onmessage = (event) ->

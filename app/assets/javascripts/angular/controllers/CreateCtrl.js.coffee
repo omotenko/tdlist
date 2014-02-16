@@ -37,7 +37,6 @@
 				id: $rootScope.id
 				title: $scope.todoTitle 
 				description: $scope.todoDescr
-
 			$http.
 				put('/messages/' + params.id, params).
 				success(middleware.success($location, HOME_PATH, storage)).
